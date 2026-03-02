@@ -85,7 +85,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: user_db
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - user_db_data:/var/lib/postgresql/data
     networks:

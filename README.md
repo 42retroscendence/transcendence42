@@ -151,7 +151,7 @@ This command automatically:
 ```bash
 # Database Configuration
 POSTGRES_USER=myuser
-POSTGRES_DB=transcendence_db
+POSTGRES_DB=user_db
 ```
 
 #### 3. Start the Application
