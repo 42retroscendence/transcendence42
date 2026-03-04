@@ -3,7 +3,8 @@ services:
     image: nginx:alpine
     container_name: nginx
     ports:
-      - "8443:443"
+        - "80:80"
+        - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
@@ -18,9 +19,7 @@ services:
 
   frontend:
     container_name: frontend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/frontend:latest
     working_dir: /app
     volumes:
       - frontend_dist:/app/dist
@@ -31,9 +30,7 @@ services:
 
   game:
     container_name: game
-    build:
-      context: ./services/game-service
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/game-service:latest
     volumes:
       - ./services/game-service/ssl:/app/ssl:ro
     env_file:
@@ -64,9 +61,7 @@ services:
 
   user:
     container_name: user
-    build:
-      context: ./services/user-service
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/user-service:latest
     env_file:
       - ./services/user-service/.env
 
@@ -94,9 +89,7 @@ services:
 
   chat:
     container_name: chat
-    build:
-      context: ./services/chat-service
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/chat-service:latest
     env_file:
       - ./services/chat-service/.env
     volumes:
@@ -106,9 +99,7 @@ services:
 
   presence:
     container_name: presence
-    build:
-      context: ./services/presence-service
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/presence-service:latest
     env_file:
       - ./services/presence-service/.env
     volumes:
@@ -121,9 +112,7 @@ services:
 
   notification:
     container_name: notification
-    build:
-      context: ./services/notification-service
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/notification-service:latest
     env_file:
       - ./services/notification-service/.env
     volumes:
@@ -133,9 +122,9 @@ services:
 
   api-gateway:
     container_name: api-gateway
-    build:
-      context: ./api-gateway
-      dockerfile: Dockerfile
+    image: ghcr.io/42retroscendence/api-gateway:latest
+    env_file:
+    - ./api-gateway/.env
     environment:
       NODE_EXTRA_CA_CERTS: /app/ssl/api-gateway.crt
       NODE_TLS_REJECT_UNAUTHORIZED: 0
