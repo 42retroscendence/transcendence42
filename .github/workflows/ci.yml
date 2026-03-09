@@ -35,6 +35,13 @@ jobs:
         chmod +x scripts/generate-ssl-certs.sh
         ./scripts/generate-ssl-certs.sh
 
+    - name: Login to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build and run containers
       run: |
         docker compose down -v || true
