@@ -93,7 +93,7 @@ const Home: FC = () => {
 			)}
 			{showRest && (
 				<section className='animate-fade-in flex flex-col items-center justify-center gap-6'>
-					<p className='font-retro text-accent-pink text-xl md:text-2xl mb-8'>Choose your game mode:</p>
+					<p className='font-retro text-accent-pink text-xl md:text-2xl mb-8'>Choose your game mode</p>
 					<div className='grid grid-cols-1 place-items-center gap-6 overflow-auto text-center text-xl sm:grid-cols-1 lg:grid-cols-3 lg:gap-20'>
 						<PinkButton
 							className='lg:max-w-72 xl:max-w-96'
@@ -117,7 +117,7 @@ const Home: FC = () => {
 				{/* Collaborators section */}
 				{showRest && (
 					<section className="mt-28 flex flex-col items-center">
-						<p className="text-sm text-accent-pink font-retro mb-2">Developed by:</p>
+						<p className="text-sm text-accent-pink font-retro mb-2">Developed by</p>
 						 <div className="text-base text-white">
 						   <a href="https://github.com/viridian-green" target="_blank" rel="noopener noreferrer" className="hover:underline">Adèle</a>, <a href="https://github.com/ProjectDaiana" target="_blank" rel="noopener noreferrer" className="hover:underline">Daiana</a>, <a href="https://github.com/schardot" target="_blank" rel="noopener noreferrer" className="hover:underline">Natália</a>, <a href="https://github.com/pebencze" target="_blank" rel="noopener noreferrer" className="hover:underline">Petra</a>, <a href="https://github.com/vados-sa" target="_blank" rel="noopener noreferrer" className="hover:underline">Vanessa</a>
 						 </div>
