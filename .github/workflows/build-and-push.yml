@@ -1,0 +1,91 @@
+name: Build Changed Services
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: changed-files
+        uses: tj-actions/changed-files@v44
+
+      - id: set-matrix
+        run: |
+          SERVICES=()
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^api-gateway/"; then
+            SERVICES+=("{\"name\":\"api-gateway\",\"context\":\"./api-gateway\"}")
+          fi
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^frontend/"; then
+            SERVICES+=("{\"name\":\"frontend\",\"context\":\"./frontend\"}")
+          fi
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^services/user-service/"; then
+            SERVICES+=("{\"name\":\"user-service\",\"context\":\"./services/user-service\"}")
+          fi
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^services/chat-service/"; then
+            SERVICES+=("{\"name\":\"chat-service\",\"context\":\"./services/chat-service\"}")
+          fi
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^services/game-service/"; then
+            SERVICES+=("{\"name\":\"game-service\",\"context\":\"./services/game-service\"}")
+          fi
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^services/presence-service/"; then
+            SERVICES+=("{\"name\":\"presence-service\",\"context\":\"./services/presence-service\"}")
+          fi
+
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "^services/notification-service/"; then
+            SERVICES+=("{\"name\":\"notification-service\",\"context\":\"./services/notification-service\"}")
+          fi
+
+          MATRIX="{\"include\":[${SERVICES[*]}]}"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  build:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.matrix != '{"include":[]}'
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recreate frontend SSL certs
+        if: matrix.name == 'frontend'
+        run: |
+          mkdir -p frontend/ssl
+          echo "${{ secrets.FRONTEND_CRT }}" > frontend/ssl/frontend.crt
+          echo "${{ secrets.FRONTEND_KEY }}" > frontend/ssl/frontend.key
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.context }}
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}:latest
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}:${{ github.sha }}

@@ -19,3 +19,5 @@ export default defineConfig({
 		host: isDocker ? '0.0.0.0' : '127.0.0.1',
 	},
 });
+
+//another test to trigger a build
