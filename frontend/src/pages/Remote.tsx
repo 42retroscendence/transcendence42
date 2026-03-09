@@ -103,24 +103,25 @@ const Remote = () => {
 								type='button'
 								onClick={() => setSelectedFriend(friend)}
 								className='flex flex-1 items-center justify-between text-left'
+								style={{ transform: 'none', transition: 'none' }}
 							>
-								<div>
+								<div className='flex items-center gap-2'>
 									<p className='text-lg font-semibold'>{friend.username}</p>
+									<span
+										className={`h-3 w-3 rounded-full ${
+											friend.status === 'online'
+												? 'bg-status-online'
+												: friend.status === 'busy'
+													? 'bg-status-busy'
+													: 'bg-status-offline'
+										}`}
+									/>
 									<p className='text-text-secondary text-sm'>
 										{friend.status === 'online' && 'Online'}
 										{friend.status === 'busy' && 'Playing'}
 										{friend.status === 'offline' && 'Offline'}
 									</p>
 								</div>
-								<span
-									className={`ml-4 h-3 w-3 rounded-full ${
-										friend.status === 'online'
-											? 'bg-status-online'
-											: friend.status === 'busy'
-												? 'bg-status-busy'
-												: 'bg-text-muted'
-									}`}
-								/>
 							</button>
 
 							<PinkButton
