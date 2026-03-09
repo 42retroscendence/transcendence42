@@ -3,7 +3,7 @@
 set -e
 
 GAME_ID="test-game-reset-$(date +%s)"
-WS_URL="wss://localhost:8443/game/${gameId}"
+WS_URL="wss://localhost:443/game/${gameId}"
 
 echo "Testing game reset on reconnect..."
 

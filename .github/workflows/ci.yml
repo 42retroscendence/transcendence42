@@ -2,7 +2,10 @@ name: Build Pong App
 
 on:
   push:
-    branches: [main]
+    branches: [
+      main,
+      fix/ci-nginx
+      ]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -53,8 +56,8 @@ jobs:
         echo "Waiting for services to be ready..."
         timeout 120 bash -c 'until docker compose ps api-gateway | grep -q "healthy"; do echo "Waiting for api-gateway..."; sleep 5; done'
         echo "api-gateway is healthy!"
-        # Wait for nginx to be ready (it depends on api-gateway being healthy)
-        timeout 30 bash -c 'until curl -k -s -o /dev/null -w "%{http_code}" https://localhost:8443/health | grep -q "200"; do echo "Waiting for nginx..."; sleep 2; done'
+        # Wait for nginx to be ready (it depends on api-gateway being healthy) and frontend to be started
+        timeout 30 bash -c 'until curl -k https://localhost:443 > /dev/null 2>&1; do echo "Waiting for nginx..."; sleep 2; done'
         echo "nginx is ready!"
 
    #Test: Show that environment variables are working

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-API_BASE="https://localhost:8443/api/users"
+API_BASE="https://localhost:443/api/users"
 COOKIE_JAR="cookies.txt"
 
 #echo "▶ Running user-service me route tests"

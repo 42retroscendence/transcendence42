@@ -84,16 +84,16 @@ env-check:
 ## === Utilities ===
 
 open:
-	@open https://localhost:8443
+	@open https://localhost:443
 
 users:
 	@echo "=== Creating test users ==="
-	@curl -s -X POST https://localhost:8443/api/auth/register -H "Content-Type: application/json" -d '{"email":"a@a.aa","username":"u1","password":"Password123!"}' -k && echo ""
-	@curl -s -X POST https://localhost:8443/api/auth/register -H "Content-Type: application/json" -d '{"email":"b@b.bb","username":"u2","password":"Password123!"}' -k && echo ""
-	@curl -s -X POST https://localhost:8443/api/auth/register -H "Content-Type: application/json" -d '{"email":"c@c.cc","username":"u3","password":"Password123!"}' -k && echo ""
-	@curl -s -X POST https://localhost:8443/api/auth/register -H "Content-Type: application/json" -d '{"email":"d@d.dd","username":"u4","password":"Password123!"}' -k && echo ""
-	@curl -s -X POST https://localhost:8443/api/auth/register -H "Content-Type: application/json" -d '{"email":"e@e.ee","username":"u5","password":"Password123!"}' -k && echo ""
-	@curl -s -X POST https://localhost:8443/api/auth/register -H "Content-Type: application/json" -d '{"email":"f@f.ff","username":"u6","password":"Password123!"}' -k && echo ""
+	@curl -s -X POST https://localhost:443/api/auth/register -H "Content-Type: application/json" -d '{"email":"a@a.aa","username":"u1","password":"Password123!"}' -k && echo ""
+	@curl -s -X POST https://localhost:443/api/auth/register -H "Content-Type: application/json" -d '{"email":"b@b.bb","username":"u2","password":"Password123!"}' -k && echo ""
+	@curl -s -X POST https://localhost:443/api/auth/register -H "Content-Type: application/json" -d '{"email":"c@c.cc","username":"u3","password":"Password123!"}' -k && echo ""
+	@curl -s -X POST https://localhost:443/api/auth/register -H "Content-Type: application/json" -d '{"email":"d@d.dd","username":"u4","password":"Password123!"}' -k && echo ""
+	@curl -s -X POST https://localhost:443/api/auth/register -H "Content-Type: application/json" -d '{"email":"e@e.ee","username":"u5","password":"Password123!"}' -k && echo ""
+	@curl -s -X POST https://localhost:443/api/auth/register -H "Content-Type: application/json" -d '{"email":"f@f.ff","username":"u6","password":"Password123!"}' -k && echo ""
 
 usertable:
 	@docker exec user_db psql -U myuser -d user_db -c "SELECT id, username, email, created_at FROM users ORDER BY id;"

@@ -26,7 +26,7 @@ services:
     image: nginx:alpine
     container_name: nginx_dev
     ports:
-      - "8443:443"
+      - "443:443"
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro

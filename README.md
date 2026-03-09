@@ -38,7 +38,7 @@ The application follows a microservices architecture with the following componen
 ┌─────────────────────────────────────────────────────────────────────┐
 │                                NGINX                                │
 │                        (Reverse Proxy + SSL)                        │
-│                          Port 8443 (HTTPS)                          │
+│                          Port 443 (HTTPS)                          │
 └─────────────────────────────────────────────────────────────────────┘
                                    │
                    ┌───────────────┴───────────────┐
@@ -196,7 +196,7 @@ Once services are running:
 
 | Service | URL | Notes |
 |---------|-----|-------|
-| **Web Application** | `https://localhost:8443` | Main entry point (self-signed cert warning expected) |
+| **Web Application** | `https://localhost:443` | Main entry point (self-signed cert warning expected) |
 | **API Gateway** | `https://localhost:3000` | REST API endpoint |
 | **Game Service** | `https://localhost:3002` | WebSocket for game |
 | **User Service** | `https://localhost:3003` | User management API |
@@ -271,7 +271,7 @@ docker ps
 docker compose logs
 
 # Ensure ports are not in use
-lsof -i :8080 -i :8443 -i :3000
+lsof -i :8080 -i :443 -i :3000
 ```
 </details>
 
