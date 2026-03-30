@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z, ZodError } from 'zod';
 import { useAuth } from '@hooks/useAuth.tsx';
 import { ErrorMessage } from '@components/index';
-import { EyeOff, Eye } from '@/icons';
+import PasswordInput from '@/components/PasswordInput';
 
 const registrationSchema = z
 	.object({
@@ -48,8 +48,6 @@ export default function Registration() {
 		submit?: string;
 	}>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const [showPassword, setShowPassword] = useState(false);
 	const navigate = useNavigate();
 	const { register } = useAuth();
 
@@ -90,14 +88,17 @@ export default function Registration() {
 		}
 	};
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormData((prev) => ({ ...prev, [name]: value }));
-		// Clear error when user starts typing
-		if (errors[name as keyof typeof errors]) {
-			setErrors((prev) => ({ ...prev, [name]: undefined }));
-		}
-	};
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const { name, value } = e.target;
+			setFormData((prev) => ({ ...prev, [name]: value }));
+			// Clear error when user starts typing
+			if (errors[name as keyof typeof errors]) {
+				setErrors((prev) => ({ ...prev, [name]: undefined }));
+			}
+		},
+		[errors],
+	);
 
 	return (
 		<div className='flex min-h-screen items-center justify-center p-4'>
@@ -147,61 +148,33 @@ export default function Registration() {
 							/>
 							{errors.email && <ErrorMessage message={errors.email} />}
 						</div>
-						<div className='relative flex flex-col space-y-2'>
+						<div className='flex flex-col space-y-2'>
 							<label htmlFor='password' className='text-md font-medium'>
 								Password
 							</label>
-							<input
+							<PasswordInput
+								required
 								id='password'
 								name='password'
-								type={showPassword ? 'text' : 'password'}
 								value={formData.password}
 								onChange={handleChange}
-								required
 								placeholder='Enter your password'
-								className='border-border text-text-secondary rounded-md border-2 p-2 text-sm'
+								errorMessage={errors.password}
 							/>
-							<button
-								type='button'
-								onClick={() => setShowPassword(!showPassword)}
-								className='text-text-muted absolute top-2/3 right-3 -translate-y-1/2 hover:text-(--color-text-primary)'
-							>
-								{showPassword ? (
-									<EyeOff className='h-4 w-4' />
-								) : (
-									<Eye className='h-4 w-4' />
-								)}
-							</button>
-							{errors.password && <ErrorMessage message={errors.password} />}
 						</div>
-						<div className='relative flex flex-col space-y-2'>
+						<div className='flex flex-col space-y-2'>
 							<label htmlFor='confirmPassword' className='text-md font-medium'>
 								Confirm Password
 							</label>
-							<input
+							<PasswordInput
+								required
 								id='confirmPassword'
 								name='confirmPassword'
-								type={showConfirmPassword ? 'text' : 'password'}
 								value={formData.confirmPassword}
 								onChange={handleChange}
-								required
 								placeholder='Confirm your password'
-								className='border-border text-text-secondary rounded-md border-2 p-2 text-sm'
+								errorMessage={errors.confirmPassword}
 							/>
-							<button
-								type='button'
-								onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-								className='text-text-muted absolute top-2/3 right-3 -translate-y-1/2 hover:text-(--color-text-primary)'
-							>
-								{showConfirmPassword ? (
-									<EyeOff className='h-4 w-4' />
-								) : (
-									<Eye className='h-4 w-4' />
-								)}
-							</button>
-							{errors.confirmPassword && (
-								<ErrorMessage message={errors.confirmPassword} />
-							)}
 						</div>
 						<div>
 							<input type='checkbox' id='terms' name='terms' value='terms' />
