@@ -47,9 +47,9 @@ jobs:
 
     - name: Build and run containers
       run: |
-        docker compose down -v || true
-        docker compose build --no-cache
-        docker compose up -d
+        docker compose -f docker-compose.dev.yml down -v || true
+        docker compose -f docker-compose.dev.yml build --no-cache
+        docker compose -f docker-compose.dev.yml up -d
 
     - name: Wait for services to be healthy
       run: |
@@ -86,7 +86,7 @@ jobs:
 
     - name: Dump logs on failure
       if: failure()
-      run: docker compose logs
+      run: docker compose -f docker-compose.dev.yml logs
 
 
 
